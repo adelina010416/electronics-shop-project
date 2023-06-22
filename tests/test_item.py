@@ -15,3 +15,23 @@ def test_apply_discount(laptop):
     Item.pay_rate = 0.8
     laptop.apply_discount()
     assert laptop.price == 40000
+
+
+def test_name(laptop):
+    assert laptop.name == 'Laptop'
+    laptop.name = 'Computer'
+    assert laptop.name == 'Computer'
+    laptop.name = 'СуперСмартфон'
+    assert laptop.name == 'СуперСмарт'
+
+
+def test_instantiate_from_csv():
+    Item.instantiate_from_csv()
+    assert len(Item.all) == 5
+    assert Item.all[0].name == 'Смартфон'
+
+
+@pytest.mark.parametrize('nums', [('5', 5), ('5.0', 5), ('5.5', 5)])
+def test_string_to_number(nums):
+    assert Item.string_to_number(nums[0]) == nums[1]
+    assert Item.string_to_number('a') == "Недопустимый ввод"
