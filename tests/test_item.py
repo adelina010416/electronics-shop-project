@@ -7,6 +7,14 @@ def laptop():
     return Item('Laptop', 50000, 3)
 
 
+def test_repr(laptop):
+    assert repr(laptop) == "Item('Laptop', 50000, 3)"
+
+
+def test_str(laptop):
+    assert str(laptop) == 'Laptop'
+
+
 def test_calculate_total_price(laptop):
     assert laptop.calculate_total_price() == 150000
 
@@ -27,8 +35,8 @@ def test_name(laptop):
 
 def test_instantiate_from_csv():
     Item.instantiate_from_csv()
-    assert len(Item.all) == 5
-    assert Item.all[0].name == 'Смартфон'
+    assert len(Item.all) == 10
+    assert Item.all[0].name == 'Laptop'
 
 
 @pytest.mark.parametrize('nums', [('5', 5), ('5.0', 5), ('5.5', 5)])
