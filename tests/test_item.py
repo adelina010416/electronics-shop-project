@@ -1,5 +1,6 @@
 import pytest
 from src.item import Item
+from src.phone import Phone
 
 
 @pytest.fixture
@@ -43,3 +44,12 @@ def test_instantiate_from_csv():
 def test_string_to_number(nums):
     assert Item.string_to_number(nums[0]) == nums[1]
     assert Item.string_to_number('a') == "Недопустимый ввод"
+
+
+def test_add(laptop):
+    table = Item('table', 15000.0, 3)
+    phone = Phone('POCO M5', 15000.0, 4, 2)
+    assert laptop + table == 6
+    assert laptop + phone == 7
+    with pytest.raises(ValueError):
+        print(laptop + 30)
