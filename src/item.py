@@ -15,6 +15,7 @@ class Item:
         :param price: Цена за единицу товара.
         :param quantity: Количество товара в магазине.
         """
+        super().__init__()
         self.__name = name
         self.price = price
         self.quantity = quantity
@@ -27,6 +28,9 @@ class Item:
         return self.__name
 
     def __add__(self, other):
+        """
+        Складывает количество товара в магазине
+        """
         if not isinstance(other, Item):
             raise ValueError('Складывать можно только объекты Item и дочерние от них.')
         return self.quantity + other.quantity
@@ -56,6 +60,9 @@ class Item:
 
     @classmethod
     def instantiate_from_csv(cls):
+        """
+        Инициализирует экземпляры класса Item данными из файла src/items.csv
+        """
         with open('../src/items.csv', 'r', encoding='windows-1251') as file:
             file_reader = csv.reader(file, delimiter=",")
             count = 0
@@ -73,6 +80,9 @@ class Item:
 
     @staticmethod
     def string_to_number(string: str):
+        """
+        Возвращает число из числа-строки.
+        """
         try:
             for i in string:
                 if not i.isdigit():
