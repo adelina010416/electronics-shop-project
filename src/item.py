@@ -1,6 +1,16 @@
 import csv
 
 
+class InstantiateCSVError(Exception):
+    """Общий класс исключения для скриптов"""
+
+    def __init__(self, comment=''):
+        self.message = 'Файл item.csv поврежден' + comment
+
+    def __str__(self):
+        return self.message
+
+
 class Item:
     """
     Класс для представления товара в магазине.
@@ -63,20 +73,25 @@ class Item:
         """
         Инициализирует экземпляры класса Item данными из файла src/items.csv
         """
-        with open('../src/items.csv', 'r', encoding='windows-1251') as file:
-            file_reader = csv.reader(file, delimiter=",")
-            count = 0
-            for line in file_reader:
-                count += 1
-                if count <= 1:
-                    continue
-                name = line[0]
-                try:
-                    price = float(line[1])
-                    quantity = int(line[2])
-                except ValueError as e:
-                    print(e)
-                Item(name, price, quantity)
+        try:
+            with open('../src/items.csv', 'r', encoding='windows-1251') as file:
+                file_reader = csv.reader(file, delimiter=",")
+                count = 0
+                for line in file_reader:
+                    count += 1
+                    if count <= 1:
+                        continue
+                    if len(line) < 3 or not line[1].isdigit() or not line[2].isdigit():
+                        raise InstantiateCSVError(f', ошибка в строке {count}')
+                    name = line[0]
+                    try:
+                        price = float(line[1])
+                        quantity = int(line[2])
+                    except ValueError as e:
+                        break
+                    Item(name, price, quantity)
+        except FileNotFoundError:
+            print("Отсутствует файл items.csv")
 
     @staticmethod
     def string_to_number(string: str):
